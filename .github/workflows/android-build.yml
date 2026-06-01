@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -27,20 +27,23 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-           
- 
-       - name: Generate Android Project
-  run: |
-    npx cap add android
-    npx cap sync android
 
-      - name: Check Android Folder
-  run: |
-    ls -la android
+      - name: Install Capacitor CLI
+        run: npm install @capacitor/cli @capacitor/core @capacitor/android
+
+      - name: Generate Android Project
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Show Android Files
+        run: |
+          find android -maxdepth 2 -type f | sort
 
       - name: Build APK
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK
