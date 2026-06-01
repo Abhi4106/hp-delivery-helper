@@ -27,12 +27,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+           
+ 
+       - name: Generate Android Project
+  run: |
+    npx cap add android
+    npx cap sync android
 
-      - name: Install Capacitor Android
-        run: |
-          npm install @capacitor/android
-          npx cap add android || true
-          npx cap sync android
+      - name: Check Android Folder
+  run: |
+    ls -la android
 
       - name: Build APK
         run: |
